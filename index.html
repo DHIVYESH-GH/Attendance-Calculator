@@ -101,8 +101,14 @@
                 message += "Good! Keep Going! You have an eligible percentage! ✅";
             } else {
                 const remainingSessions = totalSessions - totalHours;
-                const classesToAttend = Math.ceil((0.75 * (presentHours + absentHours + remainingSessions) - presentHours) / 0.25);
-                message += ` You need to attend ${classesToAttend} more classes to reach 75% attendance. 📚`;
+                const requiredAttendance = Math.ceil((0.75 * totalSessions - presentHours));
+                const classesToAttend = requiredAttendance - presentHours;
+
+                if (classesToAttend > remainingSessions) {
+                    message += ` You need to attend all the remaining ${remainingSessions} sessions to reach 75% attendance. 📚`;
+                } else {
+                    message += ` You need to attend ${classesToAttend} more classes to reach 75% attendance. 📚`;
+                }
             }
 
             document.getElementById('result').innerHTML = message;
