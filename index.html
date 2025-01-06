@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Calculator</title>
+    <style>
+        body {
+            font-family: "Inter", serif;
+            background-color: #000204;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: whitesmoke;
+            text-shadow: 2px 2px blue;
+        }
+        .calculator {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid black;
+            border-radius: 8px;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: black;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            border: 2px solid black;
+            border-radius: 8px;
+            background-color: #fff5ee;
+        }
+    </style>
+</head>
+<body>
+    <h1>Attendance Calculator 📚</h1>
+    <div class="calculator">
+        <label for="totalSessions">Total Sessions:</label>
+        <input type="number" id="totalSessions" placeholder="Enter total sessions">
+
+        <label for="presentHours">Hours Present:</label>
+        <input type="number" id="presentHours" placeholder="Enter hours present">
+
+        <label for="absentHours">Hours Absent:</label>
+        <input type="number" id="absentHours" placeholder="Enter hours absent">
+
+        <button onclick="calculateAttendance()">Calculate Attendance</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateAttendance() {
+            const totalSessions = parseFloat(document.getElementById('totalSessions').value);
+            const presentHours = parseFloat(document.getElementById('presentHours').value);
+            const absentHours = parseFloat(document.getElementById('absentHours').value);
+
+            if (isNaN(totalSessions) || isNaN(presentHours) || isNaN(absentHours) || totalSessions <= 0) {
+                document.getElementById('result').innerHTML = 'Please enter valid numbers!';
+                return;
+            }
+
+            const totalHours = presentHours + absentHours;
+            if (totalHours > totalSessions) {
+                document.getElementById('result').innerHTML = 'Total hours cannot exceed total sessions!';
+                return;
+            }
+
+            const percentage = (presentHours / totalSessions) * 100;
+            let message = `Your current attendance percentage is ${percentage.toFixed(2)}%. `;
+
+            if (percentage >= 75) {
+                message += "Good! Keep Going! You have an eligible percentage! ✅";
+            } else {
+                const remainingSessions = totalSessions - totalHours;
+                const classesToAttend = Math.ceil((0.75 * (presentHours + absentHours + remainingSessions) - presentHours) / 0.25);
+                message += ` You need to attend ${classesToAttend} more classes to reach 75% attendance. 📚`;
+            }
+
+            document.getElementById('result').innerHTML = message;
+        }
+    </script>
+</body>
+</html>
+
